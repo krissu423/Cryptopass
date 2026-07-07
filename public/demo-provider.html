@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo Provider Checkout</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="demo-shell">
+      <section class="demo-card">
+        <p class="eyebrow">Local demo provider</p>
+        <h1>Simulated on-ramp checkout</h1>
+        <p class="hero-subtitle">
+          This page stands in for the licensed provider during local development. It demonstrates the final redirect and order tracking flow without charging fiat or transferring crypto.
+        </p>
+
+        <div id="demoError" class="notice notice-error" role="alert" hidden></div>
+
+        <div id="demoDetails" class="detail-grid" aria-live="polite"></div>
+
+        <div class="progress-list" aria-label="Provider flow preview">
+          <div class="progress-item"><span>Eligibility and KYC</span><strong>Provider-owned</strong></div>
+          <div class="progress-item"><span>Card / Apple Pay authorization</span><strong>Provider-owned</strong></div>
+          <div class="progress-item"><span>Crypto purchase and delivery</span><strong>Provider-owned</strong></div>
+          <div class="progress-item"><span>Webhook status update</span><strong>App receives</strong></div>
+        </div>
+
+        <button id="completeButton" class="button button-primary full-width" type="button">
+          Simulate successful provider checkout
+        </button>
+        <a class="button button-secondary full-width" href="/" style="margin-top: 0.8rem;">Cancel and go back</a>
+
+        <p class="small-print" style="margin-top: 1rem;">
+          Real production flow redirects to Transak or your approved provider-hosted checkout instead of this demo page.
+        </p>
+      </section>
+    </main>
+
+    <script src="/demo-provider.js" defer></script>
+  </body>
+</html>

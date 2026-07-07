@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order Status · Direct Crypto Pay</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="success-shell">
+      <section class="success-card">
+        <span id="statusBadge" class="success-badge">Order status</span>
+        <h1>Checkout status</h1>
+        <p id="statusIntro" class="hero-subtitle">
+          Loading the order record...
+        </p>
+
+        <div id="statusError" class="notice notice-error" role="alert" hidden></div>
+        <div id="orderDetails" class="detail-grid" aria-live="polite"></div>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="/">Create another checkout</a>
+          <a id="explorerLink" class="button button-secondary" href="#" target="_blank" rel="noreferrer" hidden>View transaction</a>
+        </div>
+
+        <p class="small-print">
+          For real provider orders, final status is updated through provider redirects and webhooks. A provider order may still be processing even after the buyer returns here.
+        </p>
+      </section>
+    </main>
+
+    <script src="/success.js" defer></script>
+  </body>
+</html>

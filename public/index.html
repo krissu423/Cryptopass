@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Direct Crypto Pay</title>
+    <meta
+      name="description"
+      content="Pay with fiat through a licensed on-ramp provider; the recipient wallet receives the purchased crypto directly."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Direct Crypto Pay home">
+        <span class="brand-mark">D</span>
+        <span class="brand-text">Direct Crypto Pay</span>
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="#checkout">Checkout</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#compliance">Compliance</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Fiat in · Crypto out · No custody</p>
+          <h1>Pay by card or Apple Pay. The recipient gets crypto directly.</h1>
+          <p class="hero-subtitle">
+            This app never asks for a private key, never holds customer crypto, and never touches card data. It creates a provider-hosted on-ramp checkout with the recipient wallet prefilled and locked.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#checkout">Start a transfer</a>
+            <a class="button button-secondary" href="#how-it-works">See the flow</a>
+          </div>
+          <div class="trust-row" aria-label="Trust and safety notes">
+            <span>Provider-hosted card entry</span>
+            <span>KYC/AML handled by on-ramp</span>
+            <span>Destination wallet locked</span>
+          </div>
+        </div>
+
+        <aside class="status-card" aria-label="Checkout summary example">
+          <div class="card-glow"></div>
+          <p class="card-label">Example route</p>
+          <div class="route-row">
+            <span>Buyer</span>
+            <strong>€50.00</strong>
+          </div>
+          <div class="route-line"></div>
+          <div class="route-row provider-row">
+            <span>Licensed on-ramp</span>
+            <strong>KYC + payment</strong>
+          </div>
+          <div class="route-line"></div>
+          <div class="route-row">
+            <span>Recipient wallet</span>
+            <strong>USDC on Polygon</strong>
+          </div>
+          <p class="card-note">No app wallet. No manual crypto send. No card data stored here.</p>
+        </aside>
+      </section>
+
+      <section id="checkout" class="checkout-section">
+        <div class="section-heading">
+          <p class="eyebrow">Checkout</p>
+          <h2>Create a compliant on-ramp checkout</h2>
+          <p>
+            Enter the recipient wallet and amount. The app validates the fields, creates an order, and redirects to the regulated provider flow.
+          </p>
+        </div>
+
+        <div class="checkout-grid">
+          <form id="checkoutForm" class="checkout-form" novalidate>
+            <div id="demoBanner" class="notice notice-demo" hidden>
+              <strong>Demo mode is on.</strong>
+              This local checkout simulates provider completion only. Configure Transak credentials and set <code>DEMO_MODE=false</code> for real sandbox/production sessions.
+            </div>
+
+            <div class="form-row two-columns">
+              <label>
+                <span>Fiat amount</span>
+                <input id="fiatAmount" name="fiatAmount" type="number" inputmode="decimal" min="10" step="0.01" value="50" required />
+              </label>
+              <label>
+                <span>Fiat currency</span>
+                <select id="fiatCurrency" name="fiatCurrency" required>
+                  <option value="EUR">EUR</option>
+                  <option value="USD">USD</option>
+                  <option value="GBP">GBP</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-row two-columns">
+              <label>
+                <span>Crypto to deliver</span>
+                <select id="cryptoCurrencyCode" name="cryptoCurrencyCode" required>
+                  <option value="USDC">USDC</option>
+                  <option value="ETH">ETH</option>
+                  <option value="BTC">BTC</option>
+                  <option value="SOL">SOL</option>
+                  <option value="POL">POL</option>
+                  <option value="MATIC">MATIC</option>
+                </select>
+              </label>
+              <label>
+                <span>Network</span>
+                <select id="network" name="network" required></select>
+              </label>
+            </div>
+
+            <label class="form-row">
+              <span>Recipient wallet address</span>
+              <input
+                id="walletAddress"
+                name="walletAddress"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                placeholder="0x..."
+                required
+              />
+              <small id="walletHint">Use an address on the selected network.</small>
+            </label>
+
+            <div class="form-row two-columns">
+              <label>
+                <span>Buyer email <em>optional</em></span>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="buyer@example.com" />
+              </label>
+              <label>
+                <span>Payment preference</span>
+                <select id="paymentPreference" name="paymentPreference">
+                  <option value="provider_choice">Let provider show options</option>
+                  <option value="card">Prefer card</option>
+                  <option value="apple_pay">Prefer Apple Pay</option>
+                  <option value="google_pay">Prefer Google Pay</option>
+                  <option value="sepa_bank_transfer">Prefer SEPA transfer</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="checkbox-row">
+              <input id="terms" type="checkbox" required />
+              <span>
+                I understand that the on-ramp provider, not this website, handles eligibility, KYC, payment authorization, fees, limits, refunds, and crypto delivery.
+              </span>
+            </label>
+
+            <div id="formError" class="notice notice-error" role="alert" hidden></div>
+
+            <button id="submitButton" class="button button-primary full-width" type="submit">
+              Continue to secure on-ramp
+            </button>
+
+            <p class="small-print">
+              The recipient wallet is locked in the provider URL. Always double-check the address and network before continuing.
+            </p>
+          </form>
+
+          <aside class="summary-panel" aria-live="polite">
+            <h3>Order preview</h3>
+            <dl>
+              <div>
+                <dt>Buyer pays</dt>
+                <dd id="previewFiat">€50.00</dd>
+              </div>
+              <div>
+                <dt>Crypto</dt>
+                <dd id="previewCrypto">USDC</dd>
+              </div>
+              <div>
+                <dt>Network</dt>
+                <dd id="previewNetwork">Polygon</dd>
+              </div>
+              <div>
+                <dt>Recipient</dt>
+                <dd id="previewWallet">Waiting for address</dd>
+              </div>
+              <div>
+                <dt>Checkout mode</dt>
+                <dd id="previewMode">Loading...</dd>
+              </div>
+            </dl>
+            <div class="device-note" id="applePayNote">
+              Apple Pay appears only on supported Apple devices/browsers and when the provider enables it for the buyer’s region.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="info-section">
+        <div class="section-heading">
+          <p class="eyebrow">How it works</p>
+          <h2>The app avoids custody and card handling</h2>
+        </div>
+        <div class="steps">
+          <article class="step-card">
+            <span>1</span>
+            <h3>Collect transfer intent</h3>
+            <p>The buyer chooses fiat amount, crypto asset, network, and the recipient wallet address.</p>
+          </article>
+          <article class="step-card">
+            <span>2</span>
+            <h3>Create provider session</h3>
+            <p>The backend generates a one-time hosted checkout URL with the wallet address locked.</p>
+          </article>
+          <article class="step-card">
+            <span>3</span>
+            <h3>Provider handles checkout</h3>
+            <p>KYC, sanctions/risk checks, card entry, Apple Pay, fees, and payment authorization happen with the on-ramp provider.</p>
+          </article>
+          <article class="step-card">
+            <span>4</span>
+            <h3>Track completion</h3>
+            <p>Webhooks update your local order record when the provider creates, processes, completes, fails, or refunds an order.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="compliance" class="compliance-section">
+        <div class="section-heading">
+          <p class="eyebrow">Compliance boundary</p>
+          <h2>What this website does and does not do</h2>
+        </div>
+        <div class="compliance-grid">
+          <article>
+            <h3>Included</h3>
+            <p>Order form, wallet/network validation, provider session creation, redirect handling, local demo checkout, webhook endpoint, and order status page.</p>
+          </article>
+          <article>
+            <h3>Not included</h3>
+            <p>No direct card processing, no unlicensed money transmission, no custody wallet, no private key handling, and no internal conversion of fiat into crypto.</p>
+          </article>
+          <article>
+            <h3>Production requirement</h3>
+            <p>Use approved provider credentials, a public HTTPS domain, registered webhooks, and your own legal/compliance review for target jurisdictions.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Direct Crypto Pay</span>
+      <span>No investment advice. No custody. Provider availability and limits vary by jurisdiction.</span>
+    </footer>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

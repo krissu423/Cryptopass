@@ -1,0 +1,8 @@
+.env
+data/orders.json
+data/transak-access-token.json
+data-smoke-test/
+data-provider-smoke-test/
+node_modules/
+*.log
+.DS_Store
