@@ -1,6 +1,6 @@
-# Direct Crypto Pay
+# Cryptopass
 
-Direct Crypto Pay is a Node.js checkout website for a compliant fiat-to-crypto on-ramp flow.
+Cryptopass is a Node.js checkout website for a compliant fiat-to-crypto on-ramp flow.
 
 The buyer enters a fiat amount, crypto asset/network, and a recipient wallet address. Your backend creates a Transak Secure Widget URL from the server, and the buyer completes KYC/payment inside Transak. The crypto is delivered by Transak directly to the recipient wallet address supplied by your app.
 
